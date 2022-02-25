@@ -122,9 +122,7 @@ TEST(printTest, selectAnd) {
         sheet.set_selection(
                 new Select_And(
                         new Select_Contains(&sheet, "Major", "computer science"),
-			new Select_Not(
-				new Select_Contains(&sheet, "Age", "22"));
-
+			new Select_Not(new Select_Contains(&sheet, "Age", "22"))));
         sheet.print_selection(out);
 
         sheet2.set_column_names({"First", "Last", "Age", "Major"});
@@ -153,17 +151,16 @@ TEST(printTest, selectOr) {
         sheet.set_selection(
                 new Select_Or(
                         new Select_Contains(&sheet, "Major", "computer science"),
-                        new Select_Contains(
-                                new Select_Contains(&sheet, "Age", "22"));
-
+                        new Select_Contains(&sheet, "Age","22")));
         sheet.print_selection(out);
 
         sheet2.set_column_names({"First", "Last", "Age", "Major"});
+	sheet2.add_row({"Diane","Dole","22","computer science"});
         sheet2.add_row({"Sarah", "Summers", "20", "computer science"});
-        sheet2.add_row({"George", "Genius", "20", "computer science"});
-	sheet2.add_row({"Diane", "Dole", "22", "computer science"});
 	sheet2.add_row({"Amanda", "Andrews", "22", "business"});
 	sheet2.add_row({"David", "Dole", "22", "electrical engineering"});
+	sheet2.add_row({"George", "Genius", "20", "computer science"});
+
 
         sheet2.print_selection(out2);
 
