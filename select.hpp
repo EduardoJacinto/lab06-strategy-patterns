@@ -62,4 +62,72 @@ public:
 }
 };
 
+class Select_Not : public Select {
+	
+	protected:
+		Select* temp1;
+
+	public: 
+		Select_Not(Select* select) {
+			temp1 = select;
+		}
+		~Select_Not() {
+			delete temp1;
+		}
+		virtual bool select(const Spreadsheet* sheet, int row) const {
+			return ( !temp1->select(sheet,row));
+		}
+};	
+
+class Select_And : public Select {
+	protected:
+		Select* temp1;
+		Select* temp2;
+	
+	public:
+		Select_And(Select* object, Select* object2) {
+			temp1 = object;
+			temp2 = object2;
+		}
+		~Select_And() {
+		delete temp1;
+		delete temp2;
+		}
+		
+		virtual bool select(const Spreadsheet* sheet, int row) const {
+			if (!((temp1->select(sheet,row) && (temp2->select(sheet,row))))) {
+				return false;
+			}
+			else {	
+				return true;
+			}
+		}
+};
+
+class Select_Or : public Select {
+	protected: 
+		Select* temp1;
+		Select* temp2;		
+
+	public:
+		Select_Or(Select* object, Select* object2) {
+			temp1 = object;
+			temp2 = object2;
+		}
+		~Select_Or() {
+			delete temp1;
+			delete temp2;
+		}
+		
+		virtual bool select( const Spreadsheet* sheet, int row) const {
+			if(!((temp1->select(sheet,row) || temp2->select(sheet,row)))) {
+				return false;
+			}
+			else {
+				return true;
+			}
+		}
+};
+
+
 #endif //__SELECT_HPP__
