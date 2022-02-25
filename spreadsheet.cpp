@@ -42,14 +42,28 @@ int Spreadsheet::get_column_by_name(const std::string& name) const
 }
 
 void Spreadsheet::print_selection(std::ostream& out) const {
-    if (select == nullptr) {
-    	for (int i = 0; i < data.size(); ++i) {
-	    for(int j = 0; j < data.at(i).size(); ++j) {
-	        out << cell_data(i, j) << " ";     
-	    }
+	if (select == nullptr) { 
+		for(int i = 0; i < data.size(); ++i) {
+			for(int j = 0; j < column_names.size(); ++j) {
+				out << cell_data(i,j) << " "; 
+			}
+		out << std::endl;
+		}
 	}
 
-	out << std::endl;
-    }
-
-}
+	else {
+		for(int i = 0; i < this-> data.size(); ++i) {
+			bool endlinecheck = false;
+				for(int e = 0; e < column_names.size(); ++e) {
+					if(select->select(this,i)) {
+						endlinecheck = true;
+						out << cell_data(i,e) << " ";
+					}
+				}
+			if(endlinecheck) {
+				out <<std::endl;
+			}
+				
+		}
+	}
+}	
