@@ -74,8 +74,6 @@ TEST(printTest, Substring) {
         sheet2.add_row({"George", "APPLE", "21", "astrophysics"});
         sheet2.add_row({"Joe", "app", "21", "mathematics"});
 
-        sheet2.set_selection(new Select_Contains(&sheet, "Last", "apple"));
-
         sheet2.print_selection(out2);
 
         EXPECT_EQ(out.str(), out2.str());
