@@ -2,7 +2,6 @@
 #define __SELECT_HPP__
 
 #include <cstring>
-
 class Select
 {
 public:
@@ -36,6 +35,31 @@ public:
 
     // Derived classes can instead implement this simpler interface.
     virtual bool select(const std::string& s) const = 0;
+};
+				
+ class Select_Contains: public Select_Column
+{
+
+protected:
+       std::string name;
+public:
+        Select_Contains(Spreadsheet* sheet, const std::string cName, const std::string spreadName) : Select_Column(sheet,cName) {
+        name = spreadName;
+}
+
+        virtual bool select(const std::string& word) const {
+                if(word == "") {
+                       return true;
+                }
+		
+		int var1 = word.find(name);
+		if(var1 == std::string::npos) {
+			return false; 
+		}
+		else {
+			return true;
+		}
+}
 };
 
 #endif //__SELECT_HPP__
