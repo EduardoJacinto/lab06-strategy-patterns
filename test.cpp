@@ -8,7 +8,7 @@
 
 using namespace std;
 
-TEST(printTest,testContains) {
+TEST(printTest, printSelection) {
 	Spreadsheet sheet;
 
 	sheet.set_column_names({"First","Last","Age","Major"});
@@ -18,6 +18,19 @@ TEST(printTest,testContains) {
 	sheet.print_selection(cout);
 	cout << endl;
 }
+
+TEST(printTest, selectContains) {
+	Spreadsheet sheet;
+
+	sheet.set_column_names({"First", "Last", "Age", "Major"});
+	sheet.add_row({"Amanda","Andrews","22","business"});
+	sheet.add_row({"Brian","Becker","21","computer science"});
+	sheet.set_selection(new Select_Contains(&sheet, "Last","Andrew"));
+
+	sheet.print_selection(cout);
+	cout << endl;
+}
+
 
 TEST(printTest, Empty) {
 	Spreadsheet sheet1;
@@ -64,6 +77,32 @@ TEST(printTest, Substring) {
         sheet2.print_selection(out2);
 
         EXPECT_EQ(out.str(), out2.str());
+}
+
+
+TEST(printTest, selectNot) {
+	Spreadsheet sheet;
+	Spreadsheet sheet2;
+	stringstream out;
+	stringstream out2;
+	
+	sheet.set_column_names({"First", "Last", "Age", "Major"});
+	sheet.add_row({"Diane", "Dole", "22", "computer science"});
+	sheet.add_row({"Sarah", "Summers", "20", "computer science"});
+	sheet.add_row({"Joe", "Jackson", "21", "mathematics"});
+
+	sheet.set_selection(
+		new Select_Not(
+			new Select_Contains(&sheet, "Major", "computer science")));
+	
+	sheet.print_selection(out);
+
+	sheet2.set_column_names({"First", "Last", "Age", "Major"});
+	sheet2.add_row({"Joe", "Jackson", "21", "mathematics"});
+	sheet2.print_selection(out2);	
+        
+	EXPECT_EQ(out.str(), out2.str());	
+	
 }
 
 
